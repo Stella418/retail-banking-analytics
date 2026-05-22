@@ -48,7 +48,8 @@ email                  NVARCHAR (50),
 city                   NVARCHAR (50),
 credit_score           INT,
 risk_category          NVARCHAR (50),
-created_at             DATE
+created_at             DATE,
+customer_type          NVARCHAR (50)
 );
 
 
