@@ -88,6 +88,7 @@ FROM cards;
 	- Removes unneccessary columns
 	- Concatenates first_name and last_name
 	- Derives risk classification based on credit score
+	- Derives customer type from created_at
 ========================================================= */
 
 TRUNCATE TABLE customers_staging;
@@ -98,7 +99,8 @@ INSERT INTO customers_staging (
 	city,
 	credit_score,
 	risk_category,
-	created_at
+	created_at,
+	customer_type
 )
 SELECT
 	customer_id,
@@ -109,7 +111,10 @@ SELECT
 		 WHEN credit_score BETWEEN 600 AND 749 THEN 'Medium Risk'
 		 ELSE 'High Risk'
 	END AS risk_category,
-	created_at
+	created_at,
+	CASE WHEN created_at >= '2024-12-31' THEN 'New Customer'
+		 ELSE 'Old Customer'
+	END AS customer_type
 FROM customers;
 
 
