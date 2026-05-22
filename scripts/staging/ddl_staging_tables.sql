@@ -18,6 +18,7 @@ account_id              NVARCHAR (50) PRIMARY KEY,
 customer_id             NVARCHAR (50),
 account_type            NVARCHAR (50),
 balance_usd             DECIMAL  (18,2),
+balance_category        NVARCHAR (50),
 open_date               DATE
 );
 GO
