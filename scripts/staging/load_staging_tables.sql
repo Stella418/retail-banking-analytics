@@ -9,6 +9,7 @@ Purpose:
     It also applies basic data validation rules during load:
     - Loans must be created after customer registration
     - Transactions must occur after account creation
+    - Customer risk classification derived from credit score
 
     Raw tables remain untouched to preserve data integrity.
 ===================================================================================
@@ -83,7 +84,8 @@ FROM cards;
 
 /* =========================================================
    REFRESH: CUSTOMERS STAGING
-   - Direct copy from raw customers table
+   - Loads customer data and derives risk classification
+   	 based on credit score
 ========================================================= */
 
 TRUNCATE TABLE customers_staging;
@@ -95,6 +97,7 @@ INSERT INTO customers_staging (
 	email,
 	city,
 	credit_score,
+	risk_category,
 	created_at
 )
 SELECT
@@ -104,6 +107,10 @@ SELECT
 	email,
 	city,
 	credit_score,
+	CASE WHEN credit_score >= 750 THEN 'Low Risk'
+		 WHEN credit_score BETWEEN 600 AND 749 THEN 'Medium Risk'
+		 ELSE 'High Risk'
+	END AS risk_category,
 	created_at
 FROM customers;
 
