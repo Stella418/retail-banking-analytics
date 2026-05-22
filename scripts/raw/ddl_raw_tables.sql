@@ -24,18 +24,6 @@ open_date               DATE
 GO
 
 
-IF OBJECT_ID ('branches', 'U') IS NOT NULL
-	DROP TABLE branches;
-GO
-
-CREATE TABLE branches (
-branch_id               NVARCHAR (50) PRIMARY KEY,
-branch_name             NVARCHAR (50),
-manager_name            NVARCHAR (50)
-);
-GO
-
-
 IF OBJECT_ID ('cards', 'U') IS NOT NULL
 	DROP TABLE cards;
 GO
