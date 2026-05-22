@@ -270,15 +270,15 @@ WHERE amount_usd < 0;
 
 SELECT *
 FROM accounts
-WHERE open_date > GETDATE();
+WHERE open_date > '2025-12-31';
 
 SELECT *
 FROM customers
-WHERE created_at > GETDATE();
+WHERE created_at > '2025-12-31';
 
 SELECT *
 FROM loans
-WHERE start_date > GETDATE();
+WHERE start_date > '2025-12-31';
 
 
 
