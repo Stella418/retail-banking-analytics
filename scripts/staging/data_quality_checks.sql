@@ -18,8 +18,6 @@ Purpose:
 
 SELECT 'accounts' AS table_name, COUNT(*) AS row_count FROM accounts
 UNION ALL
-SELECT 'branches', COUNT(*) FROM branches
-UNION ALL
 SELECT 'cards', COUNT(*) FROM cards
 UNION ALL
 SELECT 'customers', COUNT(*) FROM customers
@@ -44,13 +42,6 @@ WHERE account_id IS NULL
    OR account_type IS NULL
    OR balance_usd IS NULL
    OR open_date IS NULL;
-
--- Branches
-SELECT *
-FROM branches
-WHERE branch_id IS NULL
-   OR branch_name IS NULL
-   OR manager_name IS NULL;
 
 -- Cards
 SELECT *
@@ -143,19 +134,6 @@ WHERE customer_id != TRIM(customer_id);
 SELECT account_type  
 FROM accounts
 WHERE account_type != TRIM(account_type);
-
--- Branches
-SELECT branch_id  
-FROM branches
-WHERE branch_id != TRIM(branch_id);
-
-SELECT branch_name   
-FROM branches
-WHERE branch_name != TRIM(branch_name);
-
-SELECT manager_name    
-FROM branches
-WHERE manager_name != TRIM(manager_name);
 
 -- Cards
 SELECT card_id 
