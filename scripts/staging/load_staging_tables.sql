@@ -28,6 +28,7 @@ INSERT INTO accounts_staging (
   customer_id,
   account_type,
   balance_usd,
+  balance_category,
   open_date
 )
 SELECT
@@ -35,6 +36,12 @@ SELECT
 	customer_id,
 	account_type,
 	balance_usd,
+	CASE WHEN balance_usd < 10000 THEN 'Low'
+		 WHEN balance_usd < 50000 THEN 'Moderate'
+		 WHEN balance_usd < 100000 THEN 'High'
+		 WHEN balance_usd < 150000 THEN 'Premium'
+		 ELSE 'Elite'
+	END AS balance_category,
 	open_date
 FROM accounts;
 
