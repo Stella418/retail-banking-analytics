@@ -41,8 +41,8 @@ FROM accounts;
 
 
 /* =========================================================
-   REFRESH: BRANCHES STAGING
-   - Direct copy (no transformation required)
+	REFRESH: BRANCHES STAGING
+	- Direct copy (no transformation required)
 ========================================================= */
 
 TRUNCATE TABLE branches_staging;
@@ -62,7 +62,7 @@ FROM branches;
 
 /* =========================================================
    REFRESH: CARDS STAGING
-   - Direct copy from raw cards table
+	- Direct copy from raw cards table
 ========================================================= */
 
 TRUNCATE TABLE cards_staging;
@@ -84,17 +84,17 @@ FROM cards;
 
 /* =========================================================
    REFRESH: CUSTOMERS STAGING
-   - Loads customer data and derives risk classification
-   	 based on credit score
+	- Loads customer data 
+	- Removes unneccessary columns
+	- Concatenates first_name and last_name
+	- Derives risk classification based on credit score
 ========================================================= */
 
 TRUNCATE TABLE customers_staging;
 
 INSERT INTO customers_staging (
 	customer_id,
-	first_name,
-	last_name,
-	email,
+	customer_name,
 	city,
 	credit_score,
 	risk_category,
@@ -102,9 +102,7 @@ INSERT INTO customers_staging (
 )
 SELECT
 	customer_id,
-	first_name,
-	last_name,
-	email,
+	CONCAT(first_name, ' ', last_name) AS customer_name,
 	city,
 	credit_score,
 	CASE WHEN credit_score >= 750 THEN 'Low Risk'
