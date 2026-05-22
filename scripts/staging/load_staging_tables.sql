@@ -1,7 +1,7 @@
 /*
 ===================================================================================
 STAGING LAYER LOAD SCRIPT
-===================================================================================
+-----------------------------------------------------------------------------------
 Purpose:
     This script refreshes all staging tables from raw source tables using a
     TRUNCATE + INSERT pattern.
@@ -37,26 +37,6 @@ SELECT
 	balance_usd,
 	open_date
 FROM accounts;
-
-
-
-/* =========================================================
-	REFRESH: BRANCHES STAGING
-	- Direct copy (no transformation required)
-========================================================= */
-
-TRUNCATE TABLE branches_staging;
-
-INSERT INTO branches_staging (
-	branch_id,
-	branch_name,
-	manager_name
-)
-SELECT 
-	branch_id,
-	branch_name,
-	manager_name
-FROM branches;
 
 
 
