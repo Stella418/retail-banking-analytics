@@ -23,18 +23,6 @@ open_date               DATE
 GO
 
 
-IF OBJECT_ID ('branches_staging', 'U') IS NOT NULL
-	DROP TABLE branches_staging;
-GO
-
-CREATE TABLE branches_staging (
-branch_id               NVARCHAR (50) PRIMARY KEY,
-branch_name             NVARCHAR (50),
-manager_name            NVARCHAR (50)
-);
-GO
-
-
 IF OBJECT_ID ('cards_staging', 'U') IS NOT NULL
 	DROP TABLE cards_staging;
 GO
@@ -59,9 +47,9 @@ last_name              NVARCHAR (50),
 email                  NVARCHAR (50),
 city                   NVARCHAR (50),
 credit_score           INT,
+risk_category          NVARCHAR (50),
 created_at             DATE
 );
-GO
 
 
 IF OBJECT_ID ('loans_staging', 'U') IS NOT NULL
