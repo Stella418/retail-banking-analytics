@@ -58,13 +58,18 @@ INSERT INTO cards_staging (
 	card_id,
 	account_id,
 	card_type,
-	expiration_date
+	expiration_date,
+	card_status
 )
 SELECT
 	card_id,
 	account_id,
 	card_type,
-	expiration_date
+	expiration_date,
+	CASE WHEN expiration_date < '2025-12-31' THEN 'Expired'
+		 WHEN expiration_date BETWEEN '2026-01-01' AND DATEADD(MONTH, 6, '2026-01-01') THEN 'Near Expiry'
+		 ELSE 'Active'
+	END AS card_status
 FROM cards;
 
 
