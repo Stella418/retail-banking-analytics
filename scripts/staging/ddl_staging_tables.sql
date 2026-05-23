@@ -32,7 +32,8 @@ CREATE TABLE cards_staging (
 card_id                NVARCHAR (50) PRIMARY KEY,
 account_id             NVARCHAR (50),
 card_type              NVARCHAR (50),
-expiration_date        DATE
+expiration_date        DATE,
+card_status            NVARCHAR (50)
 );
 GO
 
