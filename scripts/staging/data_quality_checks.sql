@@ -360,7 +360,12 @@ WHERE account_id NOT IN (
 	FROM accounts
 );
 
-
+-- Merchant location completeness 
+SELECT *
+FROM merchants_staging m
+LEFT JOIN transactions_staging t
+	ON m.merchant_id = t.merchant_id
+WHERE m.city IS NULL
 
 /* =========================================================
    11. BUSINESS INTERPRETATION SUMMARY
