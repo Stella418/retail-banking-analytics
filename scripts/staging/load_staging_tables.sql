@@ -123,14 +123,25 @@ INSERT INTO loans_staging (
 	loan_id,
 	customer_id,
 	loan_amount,
+	loan_category,
 	interest_rate,
+	interest_category,
 	start_date
 )
 SELECT 
 	l.loan_id,
 	l.customer_id,
 	l.loan_amount,
+	CASE WHEN loan_amount < 50000 THEN 'Small Loan'
+		 WHEN loan_amount <= 150000 THEN 'Medium Loan'
+		 WHEN loan_amount <= 250000 THEN 'Large Loan'
+		 ELSE 'Very Large Loan'
+	END AS loan_category,
 	l.interest_rate,
+	CASE WHEN interest_rate < 5 THEN 'Low Interest'
+		 WHEN interest_rate <= 10 THEN 'Medium Interest'
+		 ELSE 'High Interest'
+	END AS interest_category,
 	l.start_date
 FROM loans l
 JOIN customers c 
