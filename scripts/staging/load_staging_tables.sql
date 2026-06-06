@@ -6,19 +6,27 @@ Purpose:
     This script refreshes all staging tables from raw source tables using a
     TRUNCATE + INSERT pattern.
 
-    It also applies basic data validation rules during load:
-    - Loans must be created after customer registration
-    - Transactions must occur after account creation
-    - Customer risk classification derived from credit score
+	This layer also performs data transformation, enrichment and validation to prepare 
+	analysis-ready datasets for downstream reporting.
 
-    Raw tables remain untouched to preserve data integrity.
+Validation & Business Rules Applied:
+	1. Loans must be issued on or after customer registration date
+	2. Transactions must occur on or after account opening date
+	3. Customer risk categories derived from credit scores
+	4. Account balance segmentation applied
+	5. Card status derived from expiration dates
+
+Raw source tables remain unchanged to preserve data integrity nd maintain a 
+reliable audit trail.
 ===================================================================================
 */
 
 
 /* =========================================================
    REFRESH: ACCOUNTS STAGING
-   - Full reload from raw accounts table
+	- Full reload from raw accounts table
+	- Derives balance category for customer segmentation
+	- Prepares account data for reporting and analytics 
 ========================================================= */
 
 TRUNCATE TABLE accounts_staging;
@@ -49,7 +57,10 @@ FROM accounts;
 
 /* =========================================================
    REFRESH: CARDS STAGING
-	- Direct copy from raw cards table
+	- Full reload from raw cards table
+	- Derives card status based on expiration date
+	- Classifies cards as Active, Near Expiry or Expired
+
 ========================================================= */
 
 TRUNCATE TABLE cards_staging;
@@ -76,11 +87,12 @@ FROM cards;
 
 /* =========================================================
    REFRESH: CUSTOMERS STAGING
-	- Loads customer data 
-	- Removes unneccessary columns
-	- Concatenates first_name and last_name
-	- Derives risk classification based on credit score
-	- Derives customer type from created_at
+	- Full reload from raw customers table
+	- Removes unnecessary attributes
+	- Combines first and last names into customer_name
+	- Derives customer risk category from credit score
+	- Classifies customers as New or Old, based on 
+	  onboarding date
 ========================================================= */
 
 TRUNCATE TABLE customers_staging;
@@ -113,8 +125,12 @@ FROM customers;
 
 /* =========================================================
    REFRESH + VALIDATION: LOANS STAGING
-   - Includes business rule validation
-   - Ensures loans are created after customer registration
+	- Full reload from raw loans table
+	- Applies business rule validation
+	- Ensures loan start date is not earlier than customer
+	  registration date
+	- Derives loan size category
+	- Derives interest rate category
 ========================================================= */
 
 TRUNCATE TABLE loans_staging;
@@ -152,7 +168,7 @@ WHERE l.start_date >= c.created_at;
 
 /* =========================================================
    REFRESH: MERCHANTS STAGING
-   - Direct copy from raw merchants table
+	- Full reload from raw merchants table
 ========================================================= */
 
 TRUNCATE TABLE merchants_staging;
@@ -172,8 +188,12 @@ FROM merchants;
 
 /* =========================================================
    REFRESH + VALIDATION: TRANSACTIONS STAGING
-   - Ensures transactions occur after account creation
-   - Filters out logically invalid records
+	- Full reload from raw transactions table
+	- Applies business rule validation
+	- Ensures transaction date is not earlier than account
+	  opening date
+	- Filters logically invalid transaction records
+	- Produces clean transaction dataset for reporting
 ========================================================= */
 
 TRUNCATE TABLE transactions_staging;
