@@ -11,6 +11,7 @@ MERCHANT ANALYSIS
   
   Analysis Areas:
           1. Merchant City Concentration
+          2. Top Mechants by Transaction Value
 ==============================================================================================================
 */
 
@@ -24,7 +25,6 @@ Objective:
     geographic clustering of merchant activity.
 ==================================================================================================
 */
--- Merchant distribution by city (Top 10 cities)
 
 WITH merchant_city_counts AS (
     SELECT
@@ -39,4 +39,22 @@ SELECT TOP 10
     DENSE_RANK() OVER (ORDER BY total_merchants DESC) AS city_rank
 FROM merchant_city_counts
 ORDER BY total_merchants DESC;
+
+/*
+==================================================================================================
+2. TOP MERCHANTS
+--------------------------------------------------------------------------------------------------
+Objective:
+    Identify top 5 merchants by transcation value
+==================================================================================================
+*/
+SELECT TOP 5
+	m.merchant_name,
+	SUM(t.amount_usd) as total_transaction_amount
+FROM transactions_staging t
+JOIN merchants_staging m
+	ON t.merchant_id = m.merchant_id
+GROUP BY 
+	m.merchant_name
+ORDER BY total_transaction_amount DESC;
 
